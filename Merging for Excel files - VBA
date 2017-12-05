@@ -1,0 +1,269 @@
+Sub dodawanie()
+
+Application.DisplayAlerts = False
+Application.AskToUpdateLinks = False
+
+
+    Dim i As Integer
+    Dim j As Integer
+    Dim l As Integer
+    Dim s As Integer
+    Dim wb As Workbook
+    Dim plik As Variant
+    Dim lr As Long
+    Dim lc As Long
+    
+
+    plik = Application.GetOpenFilename("Excel Files (*.xlsx), *.xlsx", _
+              Title:="Select files", MultiSelect:=True)
+    licznik = 1
+    j = 1
+    a = 1
+    l = 1
+    s = 1
+    
+    
+    While licznik <= UBound(plik)
+    Set wb = Workbooks.Open(plik(licznik))
+    
+ 
+    Worksheets("Pozycje ICT SUMA").Activate
+    ActiveSheet.Unprotect Password:="Pozycje"
+    Call Odkryj
+    Call pokazwiersze
+       Do While a = 1
+       Range("b2:AC2").Select
+       Selection.Copy
+       ThisWorkbook.Activate
+       ThisWorkbook.Worksheets("Pozycje ICT SUMA").Cells(1, 1).Select
+       ActiveSheet.Paste
+       a = 0
+       Loop
+       
+  
+    wb.Activate
+    ActiveSheet.Unprotect Password:="Pozycje"
+    lr = ActiveSheet.Range("b3").SpecialCells(xlCellTypeLastCell).Row
+    lc = ActiveSheet.Range("b3").SpecialCells(xlCellTypeLastCell).Column
+    ActiveSheet.Range("A1").Select
+    Selection.AutoFilter
+    ActiveSheet.Range(Cells(3, 2), Cells(lr, lc)).AutoFilter Field:=1, Criteria1:=RGB(141, 180, 226), Operator:=xlFilterCellColor
+    ActiveSheet.Range(Cells(4, 1), Cells(lr, lc)).Select
+    Selection.SpecialCells(xlCellTypeVisible).Select
+    Selection.Delete
+    ActiveSheet.ShowAllData
+    
+    Do While Not IsEmpty(Cells(s, 4).Value) = True
+        If Cells(s, 4).Value = "ICT15WC2" Then
+            ActiveSheet.Range(Cells(s, 1), Cells(s, lc)).Select
+            Selection.Delete
+        End If
+        s = s + 1
+    Loop
+    ActiveSheet.Range(Cells(3, 2), Cells(lr, lc)).Select
+    ActiveSheet.Range(Cells(3, 2), Cells(lr, lc)).NumberFormat = "0.000"
+    Selection.Copy
+    ThisWorkbook.Activate
+        Do While Not IsEmpty(Cells(j, 2).Value) = True
+        j = j + 1
+        Loop
+        Do While Not IsEmpty(Cells(l, 3).Value) = True
+        l = l + 1
+        Loop
+    If j = l Then
+        ThisWorkbook.Worksheets("Pozycje ICT SUMA").Cells(j, 1).Select
+        ActiveSheet.Range("a" & j).PasteSpecial Paste:=xlPasteValues
+    ElseIf j < l Then
+        ThisWorkbook.Worksheets("Pozycje ICT SUMA").Cells(l, 1).Select
+        ActiveSheet.Range("a" & l).PasteSpecial Paste:=xlPasteValues
+    Else
+        ThisWorkbook.Worksheets("Pozycje ICT SUMA").Cells(j, 1).Select
+        ActiveSheet.Range("a" & j).PasteSpecial Paste:=xlPasteValues
+    End If
+    wb.Close
+    licznik = licznik + 1
+    Application.CutCopyMode = False
+    Wend
+End Sub
+
+
+Sub dodawanie1()
+
+Application.DisplayAlerts = False
+Application.AskToUpdateLinks = False
+
+    Dim i As Integer
+    Dim start As Integer
+    Dim j As Integer
+    Dim l As Integer
+    Dim wb As Workbook
+    Dim plik As Variant
+    Dim lr As Long
+    Dim lc As Long
+    
+    plik = Application.GetOpenFilename("Excel Files (*.xlsx), *.xlsx", _
+              Title:="Select files", MultiSelect:=True)
+              
+    licznik = 1
+    start = 1
+    j = 1
+    a = 1
+    i = 1
+    l = 1
+    
+    While licznik <= UBound(plik)
+    
+    Set wb = Workbooks.Open(plik(licznik))
+    Worksheets("Specyfikacja I23 I24").Activate
+    ActiveSheet.Unprotect Password:="Zapotrzebowanie"
+    
+    Call Odkryj1
+    
+       Do While a = 1
+       Range("A2:AC2").Select
+       Selection.Copy
+       ThisWorkbook.Activate
+       Worksheets("Specyfikacja I23 I24").Activate
+       ActiveSheet.Cells(1, 1).Select
+       ActiveSheet.Paste
+       a = 0
+       Loop
+       
+    wb.Activate
+    Worksheets("Specyfikacja I23 I24").Activate
+    ActiveSheet.Unprotect Password:="Zapotrzebowanie"
+    lr = ActiveSheet.Range("a3").SpecialCells(xlCellTypeLastCell).Row
+    lc = ActiveSheet.Range("a3").SpecialCells(xlCellTypeLastCell).Column
+    ActiveSheet.Range(Cells(3, 1), Cells(lr, lc)).Select
+    ActiveSheet.Range(Cells(3, 1), Cells(lr, lc)).NumberFormat = "0.000"
+    Selection.Copy
+    ThisWorkbook.Activate
+    Worksheets(2).Activate
+        
+    Do While Not IsEmpty(Cells(j, 1).Value) = True
+        j = j + 1
+    Loop
+    
+    Do While Not IsEmpty(Cells(l, 6).Value) = True
+        l = l + 1
+    Loop
+    
+    If j = l Then
+        ThisWorkbook.Worksheets("Specyfikacja I23 I24").Cells(j, 1).Select
+        ActiveSheet.Range("a" & j).PasteSpecial Paste:=xlPasteValues
+    ElseIf j < l Then
+        ThisWorkbook.Worksheets("Specyfikacja I23 I24").Cells(l, 1).Select
+         ActiveSheet.Range("a" & l).PasteSpecial Paste:=xlPasteValues
+    Else
+        ThisWorkbook.Worksheets("Specyfikacja I23 I24").Cells(j, 1).Select
+         ActiveSheet.Range("a" & j).PasteSpecial Paste:=xlPasteValues
+    End If
+    wb.Close
+    licznik = licznik + 1
+    Application.CutCopyMode = False
+    Wend
+    
+    Call zlaczenie
+End Sub
+
+
+
+Function wyw()
+Application.DisplayAlerts = False
+Application.AskToUpdateLinks = False
+Call dodawanie
+Call dodawanie1
+End Function
+
+
+
+Function Odkryj()
+Columns("H").EntireColumn.Hidden = False
+Columns("W").EntireColumn.Hidden = False
+Columns("X").EntireColumn.Hidden = False
+End Function
+
+Function Odkryj1()
+Columns("B").EntireColumn.Hidden = False
+Columns("W").EntireColumn.Hidden = False
+Columns("X").EntireColumn.Hidden = False
+End Function
+
+
+Function konwersja()
+ For Each ws In Sheets
+ On Error Resume Next
+ For Each r In ws.UsedRange.SpecialCells(xlCellTypeConstants)
+ If IsNumeric(r) Then r.Value = Val(r.Value)
+ Next
+ Next
+End Function
+
+
+
+
+Function kolumna()
+Dim j As Integer
+Dim l As Integer
+
+j = 2
+
+Range("a1").Select
+Selection.EntireColumn.Insert
+
+Do While Not IsEmpty(Cells(j, 3).Value) = True
+    j = j + 1
+Loop
+
+Worksheets("Pozycje ICT SUMA").Cells(2, 1).FormulaLocal = "=ZŁĄCZ.TEKSTY(c2;e2)"
+Worksheets("Pozycje ICT SUMA").Range(Cells(2, 1), Cells(j, 1)).FillDown
+Worksheets("Pozycje ICT SUMA").Range("a1").Interior.Color = RGB(226, 0, 122)
+Worksheets("Pozycje ICT SUMA").Range("a1").Value = "Usługi dla"
+Worksheets("Pozycje ICT SUMA").Range("a1").Font.Color = vbWhite
+Worksheets("Pozycje ICT SUMA").Range("a1").Font.Name = "Arial"
+Worksheets("Pozycje ICT SUMA").Range("a1").Font.Size = 9
+Worksheets("Pozycje ICT SUMA").Range("a1").Font.FontStyle = "Bold"
+
+
+
+
+End Function
+Function zlaczenie() ' Funkcja obsługująca dodanie formul do arkusza Specyfikacja I23 I24
+
+Dim j As Integer
+Dim l As Integer
+
+j = 1
+l = 1
+
+Do While Not IsEmpty(Cells(j, 1).Value) = True
+    j = j + 1
+Loop
+    
+Do While Not IsEmpty(Cells(l, 6).Value) = True
+    l = l + 1
+Loop
+    
+If j > 1 Then
+    Worksheets(2).Cells(2, 1).FormulaLocal = "=ZŁĄCZ.TEKSTY(d2;h2)"
+    Worksheets(2).Cells(2, 2).FormulaLocal = "=ZŁĄCZ.TEKSTY(a2;g2)"
+    Worksheets(2).Range(Cells(2, 1), Cells(j - 1, 1)).FillDown
+    Worksheets(2).Range(Cells(2, 2), Cells(j - 1, 1)).FillDown
+Else
+    Worksheets(2).Cells(2, 1).FormulaLocal = "=ZŁĄCZ.TEKSTY(d2;h2)"
+    Worksheets(2).Cells(2, 2).FormulaLocal = "=ZŁĄCZ.TEKSTY(a2;g2)"
+    Worksheets(2).Range(Cells(2, 1), Cells(l - 1, 1)).FillDown
+    Worksheets(2).Range(Cells(2, 2), Cells(l - 1, 1)).FillDown
+End If
+
+End Function
+
+Function pokazwiersze()
+
+    Dim i As Integer
+    
+    
+    For i = 1 To 400
+        Cells(i, 1).RowHeight = 10
+    Next i
+End Function
