@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class Hello {
+public class Gen {
     
     public static String pierwsze() {
     Random rand = new Random();
