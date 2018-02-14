@@ -4,14 +4,11 @@ Application.DisplayAlerts = False
 Application.AskToUpdateLinks = False
 
 
-    Dim i As Integer
-    Dim j As Integer
-    Dim l As Integer
-    Dim s As Integer
+    Dim i,j,l,s As Integer
     Dim wb As Workbook
     Dim plik As Variant
-    Dim lr As Long
-    Dim lc As Long
+    Dim lr,lc As Long
+  
     
 
     plik = Application.GetOpenFilename("Excel Files (*.xlsx), *.xlsx", _
@@ -92,14 +89,11 @@ Sub dodawanie1()
 Application.DisplayAlerts = False
 Application.AskToUpdateLinks = False
 
-    Dim i As Integer
-    Dim start As Integer
-    Dim j As Integer
-    Dim l As Integer
+    Dim i,j,l,start As Integer
     Dim wb As Workbook
     Dim plik As Variant
-    Dim lr As Long
-    Dim lc As Long
+    Dim lr,lc As Long
+
     
     plik = Application.GetOpenFilename("Excel Files (*.xlsx), *.xlsx", _
               Title:="Select files", MultiSelect:=True)
