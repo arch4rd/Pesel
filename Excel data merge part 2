@@ -1,0 +1,91 @@
+Sub Odp()
+
+Application.DisplayAlerts = False
+Application.AskToUpdateLinks = False
+
+
+    Dim i, j, l, a As Integer
+    Dim wb As Workbook
+    Dim plik As Variant
+    
+
+    plik = Application.GetOpenFilename("Excel Files (*.xlsx), *.xlsx", _
+              Title:="Select files", MultiSelect:=True)
+    licznik = 1
+    j = 8
+    l = 1
+    i = 1
+    a = 5
+    
+    
+    While licznik <= UBound(plik)
+    Set wb = Workbooks.Open(plik(licznik))
+    
+    ActiveWorkbook.Final = False
+ 
+    Worksheets(1).Activate
+    Columns(9).EntireColumn.Delete
+    Worksheets(1).Range("a1").Select
+    ActiveCell.EntireColumn.Insert
+    ActiveCell.EntireColumn.Insert
+    ActiveSheet.Range("A:S").EntireColumn.Hidden = False
+    ActiveSheet.Range("k:S").EntireColumn.Delete
+    ActiveSheet.Range("j:k").EntireColumn.Insert
+    ActiveSheet.Range("a" & 1).EntireRow.Delete
+    ActiveSheet.Range("a" & 1).EntireRow.Insert
+    Columns(5).EntireColumn.Copy
+    ActiveSheet.Range("k" & 1).PasteSpecial Paste:=xlPasteValues
+    Columns(5).EntireColumn.Delete
+    
+    
+        Do While Not IsEmpty(Cells(j, 3).Value) = True
+            j = j + 1
+        Loop
+    
+    Call NazwaPliku
+        
+    ActiveSheet.Range("s" & 5).Value = NazwaPliku
+    ActiveSheet.Range("s" & 5).Select
+    ActiveSheet.Range(Cells(5, 19), Cells(j, 19)).FillDown
+    
+    ActiveSheet.Range(Cells(5, 3), Cells(j, 19)).Select
+    Selection.SpecialCells(xlCellTypeVisible).Select
+    Selection.Copy
+    ThisWorkbook.Activate
+        Do While Not IsEmpty(Cells(l, 4).Value) = True
+            l = l + 1
+        Loop
+    ActiveSheet.Range("c" & l).PasteSpecial Paste:=xlPasteValues
+    
+    
+    
+    licznik = licznik + 1
+    Application.CutCopyMode = False
+    wb.Close
+    Wend
+    
+    Do While Not IsEmpty(Cells(i, 3).Value) = True
+        i = i + 1
+    Loop
+    
+    ActiveSheet.Range("b" & 2).FormulaLocal = "=FRAGMENT.TEKSTU(S2;SZUKAJ.TEKST(""_"";S2;1)+1;SZUKAJ.TEKST(""_"";S2;5)-SZUKAJ.TEKST(""_"";S2;1)-1)"
+    ActiveSheet.Range("b" & 2).Select
+    ActiveSheet.Range(Cells(2, 2), Cells(i, 2)).FillDown
+    
+    ActiveSheet.Range("a" & 2).FormulaLocal = "=Dziś()"
+    ActiveSheet.Range("a" & 2).Select
+    ActiveSheet.Range(Cells(2, 1), Cells(i, 1)).FillDown
+    
+    ActiveSheet.Range("n" & 2).FormulaLocal = "=Dziś()"
+    ActiveSheet.Range("n" & 2).Select
+    ActiveSheet.Range(Cells(2, 14), Cells(i, 14)).FillDown
+    
+    
+   
+End Sub
+
+Function NazwaPliku() As String
+NazwaPliku = ActiveWorkbook.Name
+End Function
+
+
