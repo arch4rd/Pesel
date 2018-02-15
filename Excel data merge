@@ -27,6 +27,8 @@ Application.AskToUpdateLinks = False
     Worksheets(1).Range("a1").Select
     ActiveCell.EntireColumn.Insert
     ActiveCell.EntireColumn.Insert
+    ActiveSheet.Range("I:S").EntireColumn.Hidden = False
+    ActiveSheet.Range("I:S").EntireColumn.Delete
         Do While Not IsEmpty(Cells(j, 3).Value) = True
             j = j + 1
         Loop
@@ -57,7 +59,7 @@ Application.AskToUpdateLinks = False
         i = i + 1
     Loop
     
-    ActiveSheet.Range("b" & 2).FormulaLocal = "=FRAGMENT.TEKSTU(s2;SZUKAJ.TEKST(""_"";s2;1)+1;3)"
+    ActiveSheet.Range("b" & 2).FormulaLocal = "=FRAGMENT.TEKSTU(S2;SZUKAJ.TEKST(""_"";S2;1)+1;SZUKAJ.TEKST(""_"";S2;5)-SZUKAJ.TEKST(""_"";S2;1)-1)"
     ActiveSheet.Range("b" & 2).Select
     ActiveSheet.Range(Cells(2, 2), Cells(i, 2)).FillDown
     
@@ -68,8 +70,6 @@ Application.AskToUpdateLinks = False
     ActiveSheet.Range("n" & 2).FormulaLocal = "=Dziś()"
     ActiveSheet.Range("n" & 2).Select
     ActiveSheet.Range(Cells(2, 14), Cells(i, 14)).FillDown
-
-
    
 End Sub
 
